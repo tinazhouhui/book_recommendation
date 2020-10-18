@@ -10,7 +10,9 @@ def get_isbn(book_title: str) -> str:
     """Takes the exact name of the book title and gives back the most popular ISBN"""
 
     books_popularity = pd.read_csv("../input/books_popularity.csv", encoding='utf-8')
-    books_with_same_title = books_popularity[books_popularity['title'] == book_title]
+    books_with_same_title = books_popularity[books_popularity['title'].str.contains(book_title)]
     sorted_by_popularity = books_with_same_title.sort_values(by=['popularity'], ascending=False)
+
+    print(sorted_by_popularity)
 
     return sorted_by_popularity.ISBN.iloc[0]

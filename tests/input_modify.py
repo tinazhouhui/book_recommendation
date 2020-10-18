@@ -11,4 +11,4 @@ class TestDummy(unittest.TestCase):
         title = 'The Fellowship of the Ring'
         output = get_isbn(title)
 
-        self.assertEqual('0345272587', output)
+        self.assertEqual('0345339703', output)
