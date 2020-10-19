@@ -6,7 +6,7 @@ def convert_to_utf(path):
     data.to_csv(path, encoding='utf-8', index=False)
 
 
-def get_isbn(book_title: str) -> object:
+def get_book_info(book_title: str) -> object:
     """Takes the exact name of the book title and gives back the most popular ISBN"""
 
     books_popularity = pd.read_csv("../input/books_popularity.csv", encoding='utf-8')
