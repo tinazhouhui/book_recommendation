@@ -6,7 +6,7 @@ def convert_to_utf(path):
     data.to_csv(path, encoding='utf-8', index=False)
 
 
-def get_book_info(books: object, book_title: str) -> object:
+def get_book_info(books: pd.DataFrame, book_title: str) -> pd.DataFrame:
     """Takes the exact name of the book title and gives back the most popular ISBN"""
 
     books_with_same_title = books[books['title'].str.contains(book_title)]

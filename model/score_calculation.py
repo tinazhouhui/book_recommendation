@@ -4,29 +4,26 @@ All functions necessary to calculate the score of individual books.
 from difflib import SequenceMatcher
 
 
-def same_author_score(book: object, author: str) -> float:
+def same_author_score(author_to_score: str, author: str) -> float:
     """
     Scores the authors based on how similar they are
     :param book: dataframe containing the book info
     :param author: the author from input book
     :return: float between 0 and 1 establishing how similar the two are
     """
-    author_to_score = book.author.iloc[0]
-
     # doc: https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher
     similarity = SequenceMatcher(lambda x: x == " ", author_to_score, author)
 
     return similarity.quick_ratio()
 
 
-def similar_title_score(book: object, title: str) -> float:
+def similar_title_score(title_to_score: str, title: str) -> float:
     """
     Scores the titles based on how similar they are
     :param book: dataframe containing the book info
     :param title: the title from input book
     :return: float between 0 and 1 establishing how similar the two are
     """
-    title_to_score = book.title.iloc[0]
 
     similarity = SequenceMatcher(lambda x: x == " ", title_to_score, title)
     return similarity.quick_ratio()
@@ -61,15 +58,13 @@ def define_region(isbn: str) -> str:
         return '99999'
 
 
-def same_language_score(book: object, isbn: str) -> float:
+def same_language_score(isbn_to_score: str, isbn: str) -> float:
     """
     Scores each book based on language/region of the book
     :param book: dataframe containing the book info
     :param isbn: the isbn from input book
     :return: float between 0 and 1 establishing how similar the two are
     """
-
-    isbn_to_score = book.ISBN.iloc[0]
 
     region_to_score = define_region(isbn_to_score)
     region = define_region(isbn)

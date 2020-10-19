@@ -10,21 +10,21 @@ class TestDummy(unittest.TestCase):
 
     def test_same_author_score(self):
         author = 'J.R.R.Tolkien'
-        book = pd.DataFrame({"author": 'J.R.R.Tolkien'}, index=[1])
-        output = same_author_score(book, author)
+        author_to_score = 'J.R.R.Tolkien'
+        output = same_author_score(author_to_score, author)
 
         self.assertEqual(1, output, 'author score not correct')
 
     def test_similar_title_score(self):
         title = 'Lord of the Rings, Part 1'
-        book = pd.DataFrame({"title": 'Lord of the Rings, Part 2'}, index=[1])
-        output = similar_title_score(book, title)
+        title_to_score = 'Lord of the Rings, Part 2'
+        output = similar_title_score(title_to_score, title)
 
         self.assertEqual(0.96, output, 'title score not correct')
 
     def test_same_language_score(self):
         isbn = '6543413545'
-        book = pd.DataFrame({"ISBN": '6533471097'}, index=[1])
-        output = same_language_score(book, isbn)
+        isbn_to_score = '6533471097'
+        output = same_language_score(isbn_to_score, isbn)
 
         self.assertEqual(1, output, 'language score not correct')
