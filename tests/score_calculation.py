@@ -1,7 +1,8 @@
 import unittest
 import pandas as pd
 
-from model.score_calculation import same_author_score, similar_title_score, same_language_score
+from model.score_calculation import same_author_score, similar_title_score, same_language_score, \
+    similar_rating_score
 
 
 class TestDummy(unittest.TestCase):
@@ -28,3 +29,10 @@ class TestDummy(unittest.TestCase):
         output = same_language_score(isbn_to_score, isbn)
 
         self.assertEqual(1, output, 'language score not correct')
+
+    def test_similar_rating_score(self):
+        rating_to_score = 3.4
+        rating = 3.4
+        output = similar_rating_score(rating_to_score, rating)
+
+        self.assertEqual(1, output, 'similar rating not correct')

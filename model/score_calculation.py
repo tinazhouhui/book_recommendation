@@ -7,7 +7,7 @@ from difflib import SequenceMatcher
 def same_author_score(author_to_score: str, author: str) -> float:
     """
     Scores the authors based on how similar they are
-    :param book: dataframe containing the book info
+    :param author_to_score: author from dataframe that we compare input to
     :param author: the author from input book
     :return: float between 0 and 1 establishing how similar the two are
     """
@@ -20,7 +20,7 @@ def same_author_score(author_to_score: str, author: str) -> float:
 def similar_title_score(title_to_score: str, title: str) -> float:
     """
     Scores the titles based on how similar they are
-    :param book: dataframe containing the book info
+    :param title_to_score: title from dataframe that we compare input to
     :param title: the title from input book
     :return: float between 0 and 1 establishing how similar the two are
     """
@@ -61,7 +61,7 @@ def define_region(isbn: str) -> str:
 def same_language_score(isbn_to_score: str, isbn: str) -> float:
     """
     Scores each book based on language/region of the book
-    :param book: dataframe containing the book info
+    :param isbn_to_score: isbn from dataframe that we compare input to
     :param isbn: the isbn from input book
     :return: float between 0 and 1 establishing how similar the two are
     """
@@ -82,3 +82,16 @@ def same_language_score(isbn_to_score: str, isbn: str) -> float:
         output = 0
 
     return output
+
+
+def similar_rating_score(rating_to_score: float, rating: float):
+    """
+    Measures distance of ratings from input book rating and represents a score
+    :param rating_to_score: rating from dataframe that we compare input to
+    :param rating: the rating from input book
+    :return: float between 0 and 1 establishing how similar the two are
+    """
+    distance = abs(rating_to_score - rating)
+
+    return 1 - (distance / 10)
+
