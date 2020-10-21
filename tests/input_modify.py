@@ -1,10 +1,10 @@
 import unittest
 import pandas as pd
 
-from model.input_modify import get_book_info
+from app.model.input_modify import get_book_info
 
-books_popularity = pd.read_csv("../input/books_popularity.csv", encoding='utf-8')
-books = pd.read_csv("../input/books.csv", encoding='utf-8')
+books_popularity = pd.read_csv("../data/input/books_popularity.csv", encoding='utf-8')
+books = pd.read_csv("../data/input/books.csv", encoding='utf-8')
 
 
 class TestDummy(unittest.TestCase):

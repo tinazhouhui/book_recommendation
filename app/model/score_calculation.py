@@ -94,4 +94,3 @@ def similar_rating_score(rating_to_score: float, rating: float):
     distance = abs(rating_to_score - rating)
 
     return 1 - (distance / 10)
-
