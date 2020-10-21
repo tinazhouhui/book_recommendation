@@ -1,6 +1,6 @@
 import unittest
 
-from app.model.score_calculation import same_author_score, similar_title_score, same_language_score, \
+from app.components.score_calculation import same_author_score, similar_title_score, same_language_score, \
     similar_rating_score
 
 
