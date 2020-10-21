@@ -11,9 +11,27 @@ class RecommendationController(BaseController):
 
         isbn = input_book_info[0]  # '0345339703'
 
-        row_to_compare = self.model.get_final_index(isbn)
-        final = compute_score(row_to_compare, input_book_info)
+        final_scores = []
 
-        print(final)
+        rows_to_compare = self.model.get_final_index(isbn)
+        for row in rows_to_compare:
 
-        return make_response('book recommendation link', 200)
+            computed_score = compute_score(row, input_book_info)
+            row_score = {
+                'isbn': computed_score[0],
+                'title': computed_score[1],
+                'same_lang': computed_score[2],
+                'same_author': computed_score[3],
+                'similar_title': computed_score[4],
+                'rating_relative': computed_score[5],
+                'popularity_overall': computed_score[6],
+                'popularity_relative': computed_score[7],
+                'st_dev': computed_score[8],
+                'final_score': computed_score[9],
+            }
+
+            final_scores.append(row_score)
+
+        final_recommendation_list = sorted(final_scores, key=lambda i: i['final_score'], reverse=True)
+
+        return make_response(jsonify(final_recommendation_list[1:11]), 200)

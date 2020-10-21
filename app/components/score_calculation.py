@@ -116,9 +116,9 @@ def compute_score(row, book):
     same_author = same_author_score(row[2], book[2])
     similar_title = similar_title_score(row[1], book[1])
     rating_relative = similar_rating_score(row[4], book[4])
-    popularity_overall = row[5] / 10
-    popularity_relative = relative_popularity_score(row[7])
-    st_dev = st_dev_score(row[6])
+    popularity_overall = float(row[6]) / 10
+    popularity_relative = relative_popularity_score(row[8])
+    st_dev = st_dev_score(row[7])
 
     final_score = same_lang + same_author + similar_title + rating_relative + popularity_overall + popularity_relative + st_dev
 

@@ -10,7 +10,7 @@ class RecommendationModel(BaseModel):
     def get_final_index(self, isbn: str):
         query = main_query(isbn) # todo fix injection
         output = self.db_session.execute(query)
-        result = output.fetchone()
+        result = output.fetchall()
         self.db_session.close()
 
         return result
