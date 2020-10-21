@@ -5,6 +5,7 @@ from difflib import SequenceMatcher
 
 
 def same_author_score(author_to_score: str, author: str) -> float:
+
     """
     Scores the authors based on how similar they are
     :param author_to_score: author from dataframe that we compare input to
@@ -18,6 +19,7 @@ def same_author_score(author_to_score: str, author: str) -> float:
 
 
 def similar_title_score(title_to_score: str, title: str) -> float:
+
     """
     Scores the titles based on how similar they are
     :param title_to_score: title from dataframe that we compare input to
@@ -84,7 +86,7 @@ def same_language_score(isbn_to_score: str, isbn: str) -> float:
     return output
 
 
-def similar_rating_score(rating_to_score: float, rating: float):
+def similar_rating_score(rating_to_score: float, rating: float) -> float:
     """
     Measures distance of ratings from input book rating and represents a score
     :param rating_to_score: rating from dataframe that we compare input to
@@ -94,3 +96,32 @@ def similar_rating_score(rating_to_score: float, rating: float):
     distance = abs(rating_to_score - rating)
 
     return 1 - (distance / 10)
+
+
+def relative_popularity_score(popularity_score: float):
+
+    if popularity_score:
+        return popularity_score
+    else:
+        return 0
+
+
+def st_dev_score(avg_sq: float):
+    return 1 - avg_sq/18  # 18 is max possible st deviation^2, reverse cause the higher the worse
+
+
+def compute_score(row, book):
+
+    same_lang = same_language_score(row[0], book[0])
+    same_author = same_author_score(row[2], book[2])
+    similar_title = similar_title_score(row[1], book[1])
+    rating_relative = similar_rating_score(row[4], book[4])
+    popularity_overall = row[5] / 10
+    popularity_relative = relative_popularity_score(row[7])
+    st_dev = st_dev_score(row[6])
+
+    final_score = same_lang + same_author + similar_title + rating_relative + popularity_overall + popularity_relative + st_dev
+
+    outcome = (row[0], row[1], same_lang, same_author, similar_title, rating_relative, popularity_overall, popularity_relative, st_dev, final_score)
+
+    return outcome
