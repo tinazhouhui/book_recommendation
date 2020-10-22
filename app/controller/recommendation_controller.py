@@ -7,6 +7,9 @@ class RecommendationController(BaseController):
     def get(self):
 
         title = request.args.get('title')
+
+        if not title:
+            return make_response(jsonify({"message": "No title provided"}), 400)
         input_book_info = self.model.get_input_book_info(title)
 
         isbn = input_book_info[0]  # '0345339703'
