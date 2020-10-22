@@ -8,7 +8,7 @@ def same_author_score(author_to_score: str, author: str) -> float:
 
     """
     Scores the authors based on how similar they are
-    :param author_to_score: author from dataframe that we compare input to
+    :param author_to_score: author of book that we compare input to
     :param author: the author from input book
     :return: float between 0 and 1 establishing how similar the two are
     """
@@ -22,7 +22,7 @@ def similar_title_score(title_to_score: str, title: str) -> float:
 
     """
     Scores the titles based on how similar they are
-    :param title_to_score: title from dataframe that we compare input to
+    :param title_to_score: title of book that we compare input to
     :param title: the title from input book
     :return: float between 0 and 1 establishing how similar the two are
     """
@@ -63,7 +63,7 @@ def define_region(isbn: str) -> str:
 def same_language_score(isbn_to_score: str, isbn: str) -> float:
     """
     Scores each book based on language/region of the book
-    :param isbn_to_score: isbn from dataframe that we compare input to
+    :param isbn_to_score: isbn of book that we compare input to
     :param isbn: the isbn from input book
     :return: float between 0 and 1 establishing how similar the two are
     """
@@ -89,7 +89,7 @@ def same_language_score(isbn_to_score: str, isbn: str) -> float:
 def similar_rating_score(rating_to_score: float, rating: float) -> float:
     """
     Measures distance of ratings from input book rating and represents a score
-    :param rating_to_score: rating from dataframe that we compare input to
+    :param rating_to_score: rating of book that we compare input to
     :param rating: the rating from input book
     :return: float between 0 and 1 establishing how similar the two are
     """
@@ -99,6 +99,11 @@ def similar_rating_score(rating_to_score: float, rating: float) -> float:
 
 
 def relative_popularity_score(popularity_score: float):
+    """
+    Popularity score of books of other readers who also liked the input book
+    :param popularity_score: popularity of book by other readers who liked input book
+    :return: float or 0 if the book was not rated by others
+    """
 
     if popularity_score:
         return popularity_score
@@ -107,10 +112,21 @@ def relative_popularity_score(popularity_score: float):
 
 
 def st_dev_score(avg_sq: float):
+    """
+    Scores how controvertial the ratings are
+    :param avg_sq: st_dev without sqroot of ratings
+    :return: float normalised to be between 0 and 1. Also reversed.
+    """
     return 1 - avg_sq/18  # 18 is max possible st deviation^2, reverse cause the higher the worse
 
 
 def compute_score(row, book):
+    """
+    Final score computation of comparing book and based on input book
+    :param row: the book we are comparing input book to
+    :param book: the input book
+    :return: final score
+    """
 
     same_lang = same_language_score(row[0], book[0])
     same_author = same_author_score(row[2], book[2])

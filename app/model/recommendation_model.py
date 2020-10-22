@@ -1,8 +1,5 @@
 from app.components.query import main_query, get_book_info_query
-from app.components.score_calculation import same_language_score, same_author_score, \
-    similar_title_score, similar_rating_score, relative_popularity_score, st_dev_score
 from app.model.base import BaseModel
-import pandas as pd
 
 
 class RecommendationModel(BaseModel):

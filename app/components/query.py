@@ -1,6 +1,6 @@
 def main_query():
 
-    who_else_likes = f"select user_id from ratings_cleaned where isbn =:isbn and ratings > 8"
+    who_else_likes = "select user_id from ratings_cleaned where isbn =:isbn and ratings > 8"
     what_books_they_like = f"select isbn, count(isbn) as count, avg(ratings) as average from ratings_cleaned where user_id in ({who_else_likes}) group by isbn"
 
     relative_popularity = f"select isbn, count*average as relative_popularity from ({what_books_they_like})"
@@ -13,6 +13,6 @@ def main_query():
 
 
 def get_book_info_query() -> str:
-    return f'select f.ISBN, f.title, f.author, f.language, f.average, f.count, f.popularity, f.avg_sq from final_index as f where title like :title order by popularity desc limit 1;'
+    return 'select f.ISBN, f.title, f.author, f.language, f.average, f.count, f.popularity, f.avg_sq from final_index as f where title like :title order by popularity desc limit 1;'
 
 
