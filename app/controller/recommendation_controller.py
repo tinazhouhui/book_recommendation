@@ -22,9 +22,6 @@ class RecommendationController(BaseController):
 
         rows_to_compare = self.model.get_final_index(isbn)
         for row in rows_to_compare:
-            if final_scores == 11:
-                break
-
             computed_score = compute_score(row, input_book_info)
             row_score = {
                 'isbn': computed_score[0],
@@ -43,4 +40,4 @@ class RecommendationController(BaseController):
 
         final_recommendation_list = sorted(final_scores, key=lambda i: i['final_score'], reverse=True)
 
-        return make_response(jsonify(final_recommendation_list[1:11]), 200)
+        return make_response(jsonify(final_recommendation_list[0:10]), 200)

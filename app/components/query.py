@@ -7,7 +7,7 @@ def main_query():
 
     max_relative_popularity = f"select max(relative_popularity) from ({relative_popularity})"
 
-    query = f"select f.ISBN, f.title, f.author, f.language, f.average, f.count, f.popularity, f.avg_sq, similar.relative_popularity from final_final_index as f left join (select isbn, count*average/({max_relative_popularity}) as relative_popularity from ({what_books_they_like})) as similar on f.isbn = similar.isbn group by lower(f.title) order by similar.relative_popularity desc;"
+    query = f"select f.ISBN, f.title, f.author, f.language, f.average, f.count, f.popularity, f.avg_sq, similar.relative_popularity from final_book_index as f left join (select isbn, count*average/({max_relative_popularity}) as relative_popularity from ({what_books_they_like})) as similar on f.isbn = similar.isbn group by lower(f.title) order by similar.relative_popularity desc;"
 
     return query
 
