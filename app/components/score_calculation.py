@@ -3,6 +3,8 @@ All functions necessary to calculate the score of individual books.
 """
 from difflib import SequenceMatcher
 
+from app.model.entities.book import Book
+
 
 def same_author_score(author_to_score: str, author: str) -> float:
     """
@@ -13,7 +15,7 @@ def same_author_score(author_to_score: str, author: str) -> float:
     """
     # doc: https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher
     similarity = SequenceMatcher(lambda x: x == " ", author_to_score, author).quick_ratio()
-    if similarity >= 0.7:
+    if similarity >= 0.9:
         return 1
     else:
         return 0
@@ -124,7 +126,7 @@ def st_dev_score(avg_sq: float):
     return 1 - avg_sq / 18  # 18 is max possible st deviation^2, reverse cause the higher the worse
 
 
-def compute_score(row, book):
+def compute_score(row: Book, book: Book):
     """
     Final score computation of comparing book and based on input book
     :param row: the book we are comparing input book to
@@ -140,13 +142,13 @@ def compute_score(row, book):
     popularity_relative_weight = 0.05
     st_dev_weight = 0.05
 
-    same_lang = same_language_score(row[0], book[0])
-    same_author = same_author_score(row[2], book[2])
-    similar_title = similar_title_score(row[1], book[1])
-    rating_relative = similar_rating_score(row[4], book[4])
-    popularity_overall = round(float(row[6]) / 10, 4)
-    popularity_relative = relative_popularity_score(row[8])
-    st_dev = st_dev_score(row[7])
+    same_lang = same_language_score(row.isbn, book.isbn)
+    same_author = same_author_score(row.author, book.author)
+    similar_title = similar_title_score(row.title, book.title)
+    rating_relative = similar_rating_score(row.rating_average, book.rating_average)
+    popularity_overall = round(float(row.popularity_overall) / 10, 4)
+    popularity_relative = relative_popularity_score(row.popularity_relative)
+    st_dev = st_dev_score(row.st_dev)
 
     final_score = sum(
         [
@@ -160,7 +162,7 @@ def compute_score(row, book):
         ])
 
     outcome = (
-        row[0], row[1], same_lang, same_author, similar_title, rating_relative, popularity_overall,
+        row.isbn, row.title, same_lang, same_author, similar_title, rating_relative, popularity_overall,
         popularity_relative, st_dev, final_score)
 
     return outcome

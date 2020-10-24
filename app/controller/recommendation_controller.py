@@ -11,18 +11,18 @@ class RecommendationController(BaseController):
         if not title:
             return make_response(jsonify({"message": "No title provided"}), 400)
 
-        input_book_info = self.model.get_input_book_info(title)
+        input_book = self.model.get_input_book_info(title)
 
-        if not input_book_info:
+        if not input_book:
             return make_response(jsonify({"message": "Title does not exist in database"}), 400)
 
-        isbn = input_book_info[0]  # '0345339703'
+        isbn = input_book.isbn  # '0345339703'
 
         final_scores = []
 
         rows_to_compare = self.model.get_final_index(isbn)
         for row in rows_to_compare:
-            computed_score = compute_score(row, input_book_info)
+            computed_score = compute_score(row, input_book)
             row_score = {
                 'isbn': computed_score[0],
                 'title': computed_score[1],
