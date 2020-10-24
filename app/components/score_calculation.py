@@ -5,7 +5,6 @@ from difflib import SequenceMatcher
 
 
 def same_author_score(author_to_score: str, author: str) -> float:
-
     """
     Scores the authors based on how similar they are
     :param author_to_score: author of book that we compare input to
@@ -13,13 +12,14 @@ def same_author_score(author_to_score: str, author: str) -> float:
     :return: float between 0 and 1 establishing how similar the two are
     """
     # doc: https://docs.python.org/3/library/difflib.html#difflib.SequenceMatcher
-    similarity = SequenceMatcher(lambda x: x == " ", author_to_score, author)
-
-    return similarity.quick_ratio()
+    similarity = SequenceMatcher(lambda x: x == " ", author_to_score, author).quick_ratio()
+    if similarity >= 0.7:
+        return 1
+    else:
+        return 0
 
 
 def similar_title_score(title_to_score: str, title: str) -> float:
-
     """
     Scores the titles based on how similar they are
     :param title_to_score: title of book that we compare input to
@@ -27,8 +27,12 @@ def similar_title_score(title_to_score: str, title: str) -> float:
     :return: float between 0 and 1 establishing how similar the two are
     """
 
-    similarity = SequenceMatcher(lambda x: x == " ", title_to_score, title)
-    return similarity.quick_ratio()
+    similarity = SequenceMatcher(lambda x: x == " ", title_to_score, title).quick_ratio()
+
+    if similarity >= 0.9:
+        return 0  # take out identical books
+
+    return round(similarity, 4)
 
 
 def define_region(isbn: str) -> str:
@@ -95,7 +99,7 @@ def similar_rating_score(rating_to_score: float, rating: float) -> float:
     """
     distance = abs(rating_to_score - rating)
 
-    return 1 - (distance / 10)
+    return round(1 - (distance / 10), 4)
 
 
 def relative_popularity_score(popularity_score: float):
@@ -106,7 +110,7 @@ def relative_popularity_score(popularity_score: float):
     """
 
     if popularity_score:
-        return popularity_score
+        return round(popularity_score, 4)
     else:
         return 0
 
@@ -117,7 +121,7 @@ def st_dev_score(avg_sq: float):
     :param avg_sq: st_dev without sqroot of ratings
     :return: float normalised to be between 0 and 1. Also reversed.
     """
-    return 1 - avg_sq/18  # 18 is max possible st deviation^2, reverse cause the higher the worse
+    return 1 - avg_sq / 18  # 18 is max possible st deviation^2, reverse cause the higher the worse
 
 
 def compute_score(row, book):
@@ -128,16 +132,35 @@ def compute_score(row, book):
     :return: final score
     """
 
+    same_lang_weight = 0.05
+    same_author_weight = 0.2
+    similar_title_weight = 0.15
+    rating_relative_weight = 0.4
+    popularity_overall_weight = 0.1
+    popularity_relative_weight = 0.05
+    st_dev_weight = 0.05
+
     same_lang = same_language_score(row[0], book[0])
     same_author = same_author_score(row[2], book[2])
     similar_title = similar_title_score(row[1], book[1])
     rating_relative = similar_rating_score(row[4], book[4])
-    popularity_overall = float(row[6]) / 10
+    popularity_overall = round(float(row[6]) / 10, 4)
     popularity_relative = relative_popularity_score(row[8])
     st_dev = st_dev_score(row[7])
 
-    final_score = same_lang + same_author + similar_title + rating_relative + popularity_overall + popularity_relative + st_dev
+    final_score = sum(
+        [
+            same_lang * same_lang_weight,
+            same_author * same_author_weight,
+            similar_title * similar_title_weight,
+            rating_relative * rating_relative_weight,
+            popularity_overall * popularity_overall_weight,
+            popularity_relative * popularity_relative_weight,
+            st_dev * st_dev_weight,
+        ])
 
-    outcome = (row[0], row[1], same_lang, same_author, similar_title, rating_relative, popularity_overall, popularity_relative, st_dev, final_score)
+    outcome = (
+        row[0], row[1], same_lang, same_author, similar_title, rating_relative, popularity_overall,
+        popularity_relative, st_dev, final_score)
 
     return outcome

@@ -9,7 +9,7 @@ class TestDummy(unittest.TestCase):
         self.assertEqual(1, 1, 'environment not set up')
 
     def test_same_author_score(self):
-        author = 'J.R.R.Tolkien'
+        author = 'Tolkien'
         author_to_score = 'J.R.R.Tolkien'
         output = same_author_score(author_to_score, author)
 
@@ -17,10 +17,10 @@ class TestDummy(unittest.TestCase):
 
     def test_similar_title_score(self):
         title = 'Lord of the Rings, Part 1'
-        title_to_score = 'Lord of the Rings, Part 2'
+        title_to_score = 'Lord of the Rings'
         output = similar_title_score(title_to_score, title)
 
-        self.assertEqual(0.96, output, 'title score not correct')
+        self.assertEqual(0.8095, output, 'title score not correct')
 
     def test_same_language_score(self):
         isbn = '6543413545'
