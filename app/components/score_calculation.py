@@ -30,7 +30,7 @@ def similar_title_score(title_to_score: str, title: str) -> float:
     similarity = SequenceMatcher(lambda x: x == " ", title_to_score, title).quick_ratio()
 
     if similarity >= 0.9:
-        return 0  # take out identical books
+        return -10  # take out identical books
 
     return round(similarity, 4)
 
