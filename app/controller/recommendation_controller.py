@@ -1,4 +1,3 @@
-from app.components.score_calculation import compute_score
 from app.controller.base import BaseController
 from flask import make_response, jsonify, request
 
@@ -20,20 +19,19 @@ class RecommendationController(BaseController):
 
         final_scores = []
 
-        rows_to_compare = self.model.get_final_index(isbn)
+        rows_to_compare = self.model.get_final_index(isbn, input_book)
         for row in rows_to_compare:
-            computed_score = compute_score(row, input_book)
             row_score = {
-                'isbn': computed_score[0],
-                'title': computed_score[1],
-                'same_lang': computed_score[2],
-                'same_author': computed_score[3],
-                'similar_title': computed_score[4],
-                'rating_relative': computed_score[5],
-                'popularity_overall': computed_score[6],
-                'popularity_relative': computed_score[7],
-                'st_dev': computed_score[8],
-                'final_score': computed_score[9],
+                'isbn': row.isbn,
+                'title': row.title,
+                'same_lang': row.same_lang_score,
+                'same_author': row.same_author_score,
+                'similar_title': row.similar_title_score,
+                'rating_relative': row.rating_relative_score,
+                'popularity_overall': row.popularity_overall_score,
+                'popularity_relative': row.popularity_relative_score,
+                'st_dev': row.st_dev_score,
+                'final_score': row.final_score,
             }
 
             final_scores.append(row_score)

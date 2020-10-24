@@ -5,7 +5,7 @@ from app.model.entities.book import Book
 
 class RecommendationModel(BaseModel):
 
-    def get_final_index(self, isbn: str):
+    def get_final_index(self, isbn: str, input_book: Book):
         query = main_query()
         output = self.db_session.execute(query, {"isbn": isbn})
         books_to_rank = output.fetchall()
@@ -19,12 +19,12 @@ class RecommendationModel(BaseModel):
                 isbn=book[0],
                 title=book[1],
                 author=book[2],
-                language=book[3],
-                rating_average=book[4],
-                rating_count=book[5],
-                popularity_overall=book[6],
-                st_dev=book[7],
-                popularity_relative=book[8]
+                rating_average=book[3],
+                rating_count=book[4],
+                popularity_overall=book[5],
+                st_dev=book[6],
+                popularity_relative=book[7],
+                input_book=input_book,
             )
 
             book_entities.append(book)
