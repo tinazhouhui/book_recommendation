@@ -35,7 +35,5 @@ class RecommendationController(BaseController):
             }
 
             final_scores.append(row_score)
-
-        final_recommendation_list = sorted(final_scores, key=lambda i: i['final_score'], reverse=True)
-
-        return make_response(jsonify(final_recommendation_list[0:10]), 200)
+            if len(final_scores) == 10:
+                return make_response(jsonify(final_scores), 200)

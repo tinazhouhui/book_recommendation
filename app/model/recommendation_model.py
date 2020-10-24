@@ -12,6 +12,7 @@ class RecommendationModel(BaseModel):
         self.db_session.close()
 
         book_entities = []
+
         # f.ISBN, f.title, f.author, f.language, f.average, f.count, f.popularity, f.avg_sq, similar.relative_popularity
 
         for book in books_to_rank:
@@ -29,13 +30,14 @@ class RecommendationModel(BaseModel):
 
             book_entities.append(book)
 
-        return book_entities
+        return sorted(book_entities, key=lambda book_entity: book_entity.final_score, reverse=True)
 
     def get_input_book_info(self, title: str):
         query = get_book_info_query()
         output = self.db_session.execute(query, {"title": '%' + title + '%'})
         result = output.fetchone()
         self.db_session.close()
+
         # f.ISBN, f.title, f.author, f.average, f.count
 
         book = Book(
