@@ -10,6 +10,7 @@ class RecommendationController(BaseController):
 
         if not title:
             return make_response(jsonify({"message": "No title provided"}), 400)
+
         input_book_info = self.model.get_input_book_info(title)
 
         isbn = input_book_info[0]  # '0345339703'
@@ -18,6 +19,8 @@ class RecommendationController(BaseController):
 
         rows_to_compare = self.model.get_final_index(isbn)
         for row in rows_to_compare:
+            if final_scores == 11:
+                break
 
             computed_score = compute_score(row, input_book_info)
             row_score = {
