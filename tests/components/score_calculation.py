@@ -4,12 +4,9 @@ from app.components.score_calculation import same_author_score, similar_title_sc
     similar_rating_score
 
 
-class TestDummy(unittest.TestCase):
-    def test_setting_environment(self):
-        self.assertEqual(1, 1, 'environment not set up')
-
+class TestScoreCalculation(unittest.TestCase):
     def test_same_author_score(self):
-        author = 'Tolkien'
+        author = 'J. R. R. Tolkien'
         author_to_score = 'J.R.R.Tolkien'
         output = same_author_score(author_to_score, author)
 
