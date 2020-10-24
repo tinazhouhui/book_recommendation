@@ -13,6 +13,9 @@ class RecommendationController(BaseController):
 
         input_book_info = self.model.get_input_book_info(title)
 
+        if not input_book_info:
+            return make_response(jsonify({"message": "Title does not exist in database"}), 400)
+
         isbn = input_book_info[0]  # '0345339703'
 
         final_scores = []
