@@ -144,8 +144,8 @@ class Book(Base):
         :return: float or 0 if the book was not rated by others
         """
 
-        if self.popularity_overall_score:
-            return round(self.popularity_overall_score, 4)
+        if self.popularity_relative:
+            return round(self.popularity_relative, 4)
         else:
             return 0
 
