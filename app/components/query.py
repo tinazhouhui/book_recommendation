@@ -1,7 +1,9 @@
 def main_query():
 
     who_else_likes = "select user_id from ratings_cleaned where isbn =:isbn and ratings > 8"
-    what_books_they_like = f"select isbn, count(isbn) as count, avg(ratings) as average from ratings_cleaned where user_id in ({who_else_likes}) group by isbn"
+    what_books_they_rated = f"select isbn, count(isbn) as count, avg(ratings) as average from ratings_cleaned where user_id in ({who_else_likes}) group by isbn"
+
+    what_books_they_like = f"select * from ({what_books_they_rated}) where average > 5"
 
     relative_popularity = f"select isbn, count*average as relative_popularity from ({what_books_they_like})"
 

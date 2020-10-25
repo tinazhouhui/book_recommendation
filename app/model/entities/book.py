@@ -156,11 +156,9 @@ class Book(Base):
         """
         return 1 - self.st_dev / 18  # 18 is max possible st deviation^2, reverse cause the higher the worse
 
-    def compute_final_score(self) -> dict:
+    def compute_final_score(self) -> float:
         """
         Final score computation of comparing book and based on input book
-        :param row: the book we are comparing input book to
-        :param book: the input book
         :return: final score
         """
 
