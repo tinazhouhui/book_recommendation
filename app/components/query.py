@@ -13,6 +13,6 @@ def main_query():
 
 
 def get_book_info_query() -> str:
-    return 'select f.ISBN, f.title, f.author, f.average, f.count from final_index as f where title like :title order by popularity desc limit 1;'
+    return 'select f.ISBN, f.title, f.author, f.average, f.count from final_book_index as f where title like :title order by popularity desc limit 1;'
 
 
