@@ -1,6 +1,7 @@
 from app.components.query import main_query, get_book_info_query
 from app.model.base import BaseModel
 from app.model.entities.book import Book
+from time import perf_counter
 
 
 def view_final_recommendation_list(recommendation_list: list):
@@ -28,10 +29,15 @@ def view_final_recommendation_list(recommendation_list: list):
 class RecommendationModel(BaseModel):
 
     def get_final_index(self, isbn: str, input_book: Book):
+        start = perf_counter()
+
         query = main_query()
         output = self.db_session.execute(query, {"isbn": isbn})
         books_to_rank = output.fetchall()
         self.db_session.close()
+
+        time_query = perf_counter() - start
+        start_entities = perf_counter()
 
         book_entities = []
 
@@ -52,11 +58,23 @@ class RecommendationModel(BaseModel):
 
             book_entities.append(book)
 
+        time_entity_mapping = perf_counter() - start_entities
+        start_sort = perf_counter()
         recommendation_list_sorted_all = sorted(book_entities,
                                                 key=lambda book_entity: book_entity.final_score,
                                                 reverse=True)
 
-        return recommendation_list_sorted_all[:11]
+        time_sorting = perf_counter() - start_sort
+        time_whole = perf_counter() - start
+
+        print({
+            'query': time_query,
+            'entity': time_entity_mapping,
+            'sorting': time_sorting,
+            'whole duration': time_whole,
+        })
+
+        return recommendation_list_sorted_all[:10]
 
     def get_input_book_info(self, title: str):
         query = get_book_info_query()
