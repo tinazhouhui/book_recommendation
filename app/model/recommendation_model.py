@@ -3,6 +3,28 @@ from app.model.base import BaseModel
 from app.model.entities.book import Book
 
 
+def view_final_recommendation_list(recommendation_list: list):
+    final_view = []
+
+    for book in recommendation_list:
+        book = {
+            'isbn': book.isbn,
+            'title': book.title,
+            'same_lang': book.same_lang_score,
+            'same_author': book.same_author_score,
+            'similar_title': book.similar_title_score,
+            'rating_relative': book.rating_relative_score,
+            'popularity_overall': book.popularity_overall_score,
+            'popularity_relative': book.popularity_relative_score,
+            'st_dev': book.st_dev_score,
+            'final_score': book.final_score,
+        }
+
+        final_view.append(book)
+
+    return final_view
+
+
 class RecommendationModel(BaseModel):
 
     def get_final_index(self, isbn: str, input_book: Book):
@@ -30,7 +52,11 @@ class RecommendationModel(BaseModel):
 
             book_entities.append(book)
 
-        return sorted(book_entities, key=lambda book_entity: book_entity.final_score, reverse=True)
+        recommendation_list_sorted_all = sorted(book_entities,
+                                                key=lambda book_entity: book_entity.final_score,
+                                                reverse=True)
+
+        return recommendation_list_sorted_all[:11]
 
     def get_input_book_info(self, title: str):
         query = get_book_info_query()

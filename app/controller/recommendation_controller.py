@@ -1,6 +1,8 @@
 from app.controller.base import BaseController
 from flask import make_response, jsonify, request
 
+from app.model.recommendation_model import view_final_recommendation_list
+
 
 class RecommendationController(BaseController):
     def get(self):
@@ -17,23 +19,7 @@ class RecommendationController(BaseController):
 
         isbn = input_book.isbn  # '0345339703'
 
-        final_scores = []
+        recommendation_list = self.model.get_final_index(isbn, input_book)
+        final_view = view_final_recommendation_list(recommendation_list)
 
-        rows_to_compare = self.model.get_final_index(isbn, input_book)
-        for row in rows_to_compare:
-            row_score = {
-                'isbn': row.isbn,
-                'title': row.title,
-                'same_lang': row.same_lang_score,
-                'same_author': row.same_author_score,
-                'similar_title': row.similar_title_score,
-                'rating_relative': row.rating_relative_score,
-                'popularity_overall': row.popularity_overall_score,
-                'popularity_relative': row.popularity_relative_score,
-                'st_dev': row.st_dev_score,
-                'final_score': row.final_score,
-            }
-
-            final_scores.append(row_score)
-            if len(final_scores) == 10:
-                return make_response(jsonify(final_scores), 200)
+        return make_response(jsonify(final_view), 200)
