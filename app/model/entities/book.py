@@ -154,7 +154,8 @@ class Book(Base):
         Scores how controversial the ratings are
         :return: float normalised to be between 0 and 1. Also reversed.
         """
-        return round(1 - self.st_dev / 18, 4)  # 18 is max possible st deviation^2, reverse cause the higher the worse
+        # 18 is max possible st deviation^2, reverse cause the higher the worse
+        return round(1 - self.st_dev / 18, 4)
 
     def compute_final_score(self) -> float:
         """
