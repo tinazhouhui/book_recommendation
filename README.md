@@ -1,46 +1,42 @@
 
 # Introduction
-The goal is to create a book recommendation algorithm. This task is part of a interview process.
+The goal is to create a book recommendation algorithm.
 
 ### Understanding of the problem
-- Book recommendation in principle is a decision making process of choosing the best option
-- the best option is determined by ordering of all the options from best to worst
-- the order is determined by scoring of common characteristics - factors
-- the scoring is based on the input data
-- the importance of the factors can be dependent on personal preference (weighted average)
+- Recommendation in principle is ordering of all the options from most relevant to least based on past information (book title)
+- The relevancy is determined by individual factors that have an impact on rating. 
+- Number of factors is dependent on available information 
+- For every book, each factor is scored and weighted to get final score
+- Ordering books by the final score will produce a list of best recommendations
 
 ### Methodology and approach
 - Data discovery - snapshot
   - Missing values
-  - Statistical information
   - Distribution and relationships
-  - ISBN - language info extraction
+  - Data extraction and cleaning
+- Factor identification
+  - Available information
+  - Common characteristics
 - Scoring function that would assign a correct score to each factor
-  - available info from input data
-  - determine common characteristics with dataset
-  - assign score - ??
-    - determined by historical data? what about ambiguous factors? Is year publishing good if it is similar or bad?  
-- implementation and testing
-  - benchmark?
-- trends and clusters analysis?
-- future improvements
+- Engineering
+- Future improvements
+  - Recommendation
+  - Performance
     
 ### Assumptions
-- Input data from reader is just the book (ISBN)
+- Input data is only a book title 
+- Recommendation is based on the fact that input book was liked
+- Validity of dataset
+- 0 is missing rating rather than really bad rating
+- At least three ratings per book
 
-# Data Discovery
-## Users
-- total of 278 856 userIDs
-- 110 760 missing age - INCOMPLETE DATA, probably not use age as one of deciding factors
+# Requirements
+- Python 3
+- SQLAlchemy~=1.3.19
+- flask~=1.1.1
+- SQL database
 
-## Ratings
-- 1 149 780 ratings of 340 558 books
-- by 105 283 users
-  - max number of ratings 13600, min 0 (only 5)
-  - average ratings per person - 11
-  
-## Books
-- total 271 379
-- 270 170 books rated (1 031 175 ratings)
-
-# What could be improved
+# Run
+```bash
+python3 start.py
+```
