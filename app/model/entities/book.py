@@ -154,7 +154,7 @@ class Book(Base):
         Scores how controversial the ratings are
         :return: float normalised to be between 0 and 1. Also reversed.
         """
-        return 1 - self.st_dev / 18  # 18 is max possible st deviation^2, reverse cause the higher the worse
+        return round(1 - self.st_dev / 18, 4)  # 18 is max possible st deviation^2, reverse cause the higher the worse
 
     def compute_final_score(self) -> float:
         """
@@ -163,11 +163,11 @@ class Book(Base):
         """
 
         same_lang_weight = 0.05
-        same_author_weight = 0.2
+        same_author_weight = 0.15
         similar_title_weight = 0.15
-        rating_relative_weight = 0.4
-        popularity_overall_weight = 0.1
-        popularity_relative_weight = 0.05
+        popularity_relative_weight = 0.45
+        popularity_overall_weight = 0.05
+        rating_relative_weight = 0.05
         st_dev_weight = 0.05
 
         final_score = sum(
