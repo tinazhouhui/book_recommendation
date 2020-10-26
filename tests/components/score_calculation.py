@@ -1,34 +1,45 @@
 import unittest
 
-from app.components.score_calculation import same_author_score, similar_title_score, same_language_score, \
-    similar_rating_score
+from app.model.entities.book import Book
 
+input_book = Book(
+    isbn='6543413545',
+    title='Lord of the Rings, Part 1',
+    author='J. R. R.Tolkien',
+    rating_average=3.4,
+    rating_count=68,
+)
+
+book_to_compare = Book(
+    isbn='6533471097',
+    title='Lord of the Rings',
+    author='J.R.R.Tolkien',
+    rating_average=3.4,
+    rating_count=95,
+    popularity_relative=0.698468463,
+    st_dev=2.871345,
+    input_book=input_book,
+
+)
 
 class TestScoreCalculation(unittest.TestCase):
     def test_same_author_score(self):
-        author = 'J. R. R. Tolkien'
-        author_to_score = 'J.R.R.Tolkien'
-        output = same_author_score(author_to_score, author)
-
-        self.assertEqual(1, output, 'author score not correct')
+        self.assertEqual(1, book_to_compare.same_author_score, 'author score not correct')
 
     def test_similar_title_score(self):
-        title = 'Lord of the Rings, Part 1'
-        title_to_score = 'Lord of the Rings'
-        output = similar_title_score(title_to_score, title)
-
-        self.assertEqual(0.8095, output, 'title score not correct')
+        self.assertEqual(0.8095, book_to_compare.similar_title_score, 'title score not correct')
 
     def test_same_language_score(self):
-        isbn = '6543413545'
-        isbn_to_score = '6533471097'
-        output = same_language_score(isbn_to_score, isbn)
-
-        self.assertEqual(1, output, 'language score not correct')
+        self.assertEqual(1, book_to_compare.same_lang_score, 'language score not correct')
 
     def test_similar_rating_score(self):
-        rating_to_score = 3.4
-        rating = 3.4
-        output = similar_rating_score(rating_to_score, rating)
+        self.assertEqual(1, book_to_compare.rating_relative_score, 'similar rating not correct')
 
-        self.assertEqual(1, output, 'similar rating not correct')
+    def test_relative_popularity_score(self):
+        self.assertEqual(0.6985, book_to_compare.popularity_relative_score, 'relative popularity not correct')
+
+    def test_st_dev_score(self):
+        self.assertEqual(0.8405, book_to_compare.st_dev_score, 'relative popularity not correct')
+
+    def test_final_score(self):
+        self.assertEqual(0.848375, book_to_compare.final_score, 'relative popularity not correct')
