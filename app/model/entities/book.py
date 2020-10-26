@@ -165,9 +165,9 @@ class Book(Base):
         same_lang_weight = 0.05
         same_author_weight = 0.15
         similar_title_weight = 0.15
-        popularity_relative_weight = 0.45
-        popularity_overall_weight = 0.05
         rating_relative_weight = 0.05
+        popularity_overall_weight = 0.05
+        popularity_relative_weight = 0.45
         st_dev_weight = 0.05
 
         final_score = sum(
