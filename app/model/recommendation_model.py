@@ -4,7 +4,10 @@ from app.model.entities.book import Book
 from time import perf_counter
 
 
-def view_final_recommendation_list(recommendation_list: list):
+def view_final_recommendation_list(recommendation_list: list) -> list:
+    """
+    Visual mapping to a dictionary of the final recommendation list.
+    """
     final_view = []
 
     for book in recommendation_list:
@@ -27,12 +30,20 @@ def view_final_recommendation_list(recommendation_list: list):
 
 
 class RecommendationModel(BaseModel):
+    """
+    Methods to query db.
+    """
 
-    def get_final_index(self, isbn: str, input_book: Book):
+    def get_final_index(self, input_book: Book) -> list:
+        """
+        Query db to get the full list of books as raw data and mapping to book entity.
+        Calculating all scores based on mapped values.
+        Returns final list of 10 books to recommend.
+        """
         start = perf_counter()
 
         query = main_query()
-        output = self.db_session.execute(query, {"isbn": isbn})
+        output = self.db_session.execute(query, {"isbn": input_book.isbn})
         books_to_rank = output.fetchall()
         self.db_session.close()
 
@@ -76,7 +87,10 @@ class RecommendationModel(BaseModel):
 
         return recommendation_list_sorted_all[:10]
 
-    def get_input_book_info(self, title: str):
+    def get_input_book_info(self, title: str) -> Book:
+        """
+        Query db based on input title to return Book entity.
+        """
         query = get_book_info_query()
         output = self.db_session.execute(query, {"title": '%' + title + '%'})
         result = output.fetchone()

@@ -6,6 +6,10 @@ from app.model.recommendation_model import view_final_recommendation_list
 
 
 class RecommendationController(BaseController):
+    """
+    Controller, GET method, orchestrating data input/output.
+    Performance timing.
+    """
     def get(self):
         start = perf_counter()
 
@@ -23,7 +27,7 @@ class RecommendationController(BaseController):
         isbn = input_book.isbn  # '0345339703'
         time_input = perf_counter() - start - time_title
 
-        recommendation_list = self.model.get_final_index(isbn, input_book)
+        recommendation_list = self.model.get_final_index(input_book)
         time_list = perf_counter() - start - time_input
 
         final_view = view_final_recommendation_list(recommendation_list)
