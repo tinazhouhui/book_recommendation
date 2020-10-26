@@ -42,6 +42,7 @@ class RecommendationModel(BaseModel):
         """
         start = perf_counter()
 
+        # Query execution
         query = main_query()
         output = self.db_session.execute(query, {"isbn": input_book.isbn})
         books_to_rank = output.fetchall()
@@ -54,6 +55,7 @@ class RecommendationModel(BaseModel):
 
         # f.ISBN, f.title, f.author, f.language, f.average, f.count, f.popularity, f.avg_sq, similar.relative_popularity
 
+        # Mapping on entity and calculation
         for book in books_to_rank:
             book = Book(
                 isbn=book[0],
@@ -71,6 +73,8 @@ class RecommendationModel(BaseModel):
 
         time_entity_mapping = perf_counter() - start_entities
         start_sort = perf_counter()
+
+        # Sorting final list
         recommendation_list_sorted_all = sorted(book_entities,
                                                 key=lambda book_entity: book_entity.final_score,
                                                 reverse=True)
@@ -78,6 +82,7 @@ class RecommendationModel(BaseModel):
         time_sorting = perf_counter() - start_sort
         time_whole = perf_counter() - start
 
+        # Performance
         print({
             'query': time_query,
             'entity': time_entity_mapping,
@@ -91,6 +96,7 @@ class RecommendationModel(BaseModel):
         """
         Query db based on input title to return Book entity.
         """
+        # Query
         query = get_book_info_query()
         output = self.db_session.execute(query, {"title": '%' + title + '%'})
         result = output.fetchone()
@@ -98,6 +104,7 @@ class RecommendationModel(BaseModel):
 
         # f.ISBN, f.title, f.author, f.average, f.count
 
+        # Mapping on entity
         book = Book(
             isbn=result[0],
             title=result[1],
