@@ -10,7 +10,7 @@ pip:
 		cd $(root_project) && pip3 install -r requirements.txt
 
 .PHONY: qa
-qa:
+qa: pip
 	@(printf "${BG}Prepare log directory${NC}")
 		mkdir -p $(root_project)/log
 
