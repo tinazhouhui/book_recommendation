@@ -39,7 +39,7 @@ class TestScoreCalculation(unittest.TestCase):
         self.assertEqual(0.6985, book_to_compare.popularity_relative_score, 'relative popularity not correct')
 
     def test_st_dev_score(self):
-        self.assertEqual(0.8405, book_to_compare.st_dev_score, 'relative popularity not correct')
+        self.assertEqual(0.8405, book_to_compare.st_dev_score, 'stdev not correct')
 
     def test_final_score(self):
-        self.assertEqual(0.848375, book_to_compare.final_score, 'relative popularity not correct')
+        self.assertEqual(0.7277750000000001, book_to_compare.final_score, 'final score not correct')
